@@ -1,13 +1,17 @@
 <?php
 
+use App\Http\Controllers\Api\BannerController;
 use App\Http\Controllers\Api\Internal\AuthController;
 use App\Http\Controllers\Api\Internal\MerchantController;
 use App\Http\Controllers\Api\Internal\ProductController;
 use App\Http\Controllers\Api\Internal\VoucherController;
 use App\Http\Controllers\Api\Merchant\GuestController;
 use App\Http\Controllers\Api\ProductCategoryController;
+use App\Http\Controllers\Api\ProductGroupController;
 use App\Http\Controllers\Api\TestController;
+use App\Http\Controllers\Api\RewardTokenController;
 use App\Http\Controllers\Api\UserController;
+use App\Models\Banner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -51,6 +55,25 @@ Route::prefix('product')->group(function () {
 
 Route::prefix('product-rating')->group(function () {
 
+});
+
+Route::prefix('product-group')->group(function () {
+   Route::get('/', [ProductGroupController::class,  'queryProductGroups']);
+});
+
+Route::prefix('banner')->group(function () {
+    Route::get('/', [BannerController::class, 'queryBanners']);
+});
+
+Route::prefix('reward-token')->group(function () {
+    Route::post('/transaction', [RewardTokenController::class, 'queryTokenTransactions']);
+    Route::post('/balance', [RewardTokenController::class, 'queryBalance']);
+});
+
+Route::prefix('voucher')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Api\VoucherController::class, 'queryVouchers']);
+    Route::get('/{voucherId}/detail', [\App\Http\Controllers\Api\VoucherController::class, 'queryVoucherDetail']);
+    Route::post('/redeem', [\App\Http\Controllers\Api\VoucherController::class, 'redeemVoucher']);
 });
 
 Route::prefix('internal')->group(function() {

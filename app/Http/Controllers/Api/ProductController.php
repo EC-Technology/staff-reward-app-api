@@ -24,13 +24,13 @@ class ProductController extends ApiController {
     public function queryProducts(Request $request): JsonResponse {
         $categoryId = $request->input('category_id');
 
-        if (empty($categoryId)) {
-            return $this->errorResponse('category id is required');
+        $query = Product::query();
+
+        if (!empty($categoryId)) {
+            $query->where(['category_id' => $categoryId]);
         }
 
-        $products = Product::query()->where([
-            'category_id' => $categoryId
-        ])->get();
+        $products = $query->get();
 
         return $this->successResponse($products);
 
